@@ -1,0 +1,14 @@
+{
+  "name": "e-commerce-app",
+  "version": "1.0.0",
+  "description": "GraphQL e-commerce-app",
+  "main": "index.js",
+  "repository": "https://github.com/K-G-J/graphql-e-commerce-app",
+  "author": "Kate Johnson",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "apollo-server": "^3.12.0",
+    "graphql": "^16.6.0"
+  }
+}

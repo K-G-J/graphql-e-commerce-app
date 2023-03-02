@@ -84,6 +84,21 @@ const products = [
   },
 ]
 
+const categories = [
+  {
+    id: 'c01b1ff4-f894-4ef2-b27a-22aacc2fca70',
+    name: 'Kitchen',
+  },
+  {
+    id: '34115aac-0ff5-4859-8f43-10e8db23602b',
+    name: 'Garden',
+  },
+  {
+    id: 'd914aec0-25b2-4103-9ed8-225d39018d1d',
+    name: 'Sports',
+  },
+]
+
 // create schema for GraphQL
 const typeDefs = gql`
   # define query
@@ -91,12 +106,13 @@ const typeDefs = gql`
     # Query name: return type
     hello: String
     products: [Product!]!
-    # pass in variable with query
-    product(id: ID!): Product
+    product(id: ID!): Product # args = passed in variable with query
+    categories: [Category!]!
+    category(id: ID!): Category
   }
   # define object type
   type Product {
-    id: ID
+    id: ID!
     name: String!
     description: String!
     quantity: Int!
@@ -104,19 +120,26 @@ const typeDefs = gql`
     price: Float!
     onSale: Boolean!
   }
+  type Category {
+    id: ID!
+    name: String!
+  }
 `
 // define resolves for queries and mutations
 const resolvers = {
   // type
   Query: {
     // name and resolver method
-    hello: () => 'World',
-    products: () => products,
+    hello: (parent, args, context) => 'World',
+    products: (parent, args, context) => products,
     product: (parent, args, context) => {
-      const productId = args.id // args = variables passed with query
-      const product = products.find((product) => product.id === productId)
-      if (!product) return null
-      return product
+      const { id } = args // args = variables passed with query
+      return products.find((product) => product.id === id)
+    },
+    categories: (parent, args, context) => categories,
+    category: (parent, args, context) => {
+      const { id } = args
+      return categories.find((category) => category.id === id)
     },
   },
 }

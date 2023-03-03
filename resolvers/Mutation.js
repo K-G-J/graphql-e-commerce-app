@@ -51,6 +51,11 @@ exports.Mutation = {
   },
   // Deleting
   deleteCategory: (parent, { id }, { db }) => {
+    const categoryIds = db.categories.map((category) => {
+      return category.id
+    })
+    // return false is category not in db
+    if (!categoryIds.includes(id)) return false
     db.categories = db.categories.filter((category) => category.id != id)
     // change categoryId of deleted cateogry in products to null
     db.products = db.products.map((product) => {
@@ -61,6 +66,26 @@ exports.Mutation = {
         }
       else return product
     })
+    return true
+  },
+  deleteProduct: (parent, { id }, { db }) => {
+    const productIds = db.products.map((product) => {
+      return product.id
+    })
+    // return false is product not in db
+    if (!productIds.includes(id)) return false
+    db.products = db.products.filter((product) => product.id != id)
+    // cascade deletion to reviews
+    db.reviews = db.reviews.filter((review) => review.productId != id)
+    return true
+  },
+  deleteReview: (parent, { id }, { db }) => {
+    const reviewIds = db.reviews.map((review) => {
+      return review.id
+    })
+    // return false is review not in db
+    if (!reviewIds.includes(id)) return false
+    db.reviews = db.reviews.filter((review) => review.id != id)
     return true
   },
 }

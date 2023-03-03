@@ -1,16 +1,22 @@
-const { categories, products } = require('../db')
-
 exports.Query = {
   // name and resolver method
   hello: (parent, args, context) => 'World',
-  products: (parent, args, context) => products,
-  product: (parent, args, context) => {
-    const { id } = args // args = variables passed with query
+  products: (parent, { filter }, { products }) => {
+    let filteredProducts = products
+    if (filter) {
+      if (filter.onSale === true) {
+        filteredProducts = filteredProducts.filter(product => {
+          return product.onSale
+        })
+      }
+    }
+    return filteredProducts
+  },
+  product: (parent, { id }, { products }) => {
     return products.find((product) => product.id === id)
   },
-  categories: (parent, args, context) => categories,
-  category: (parent, args, context) => {
-    const { id } = args
+  categories: (parent, args, { categories }) => categories,
+  category: (parent, { id }, { categories }) => {
     return categories.find((category) => category.id === id)
   },
 }

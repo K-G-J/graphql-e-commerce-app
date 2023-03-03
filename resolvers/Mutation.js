@@ -12,16 +12,24 @@ exports.Mutation = {
     return newCategory
   },
   addProduct: (parent, { input }, { db }) => {
-    const { name, image, price, onSale, quantity, categoryId, description } = input
+    const {
+      name,
+      image,
+      price,
+      onSale,
+      quantity,
+      categoryId,
+      description,
+    } = input
     const newProduct = {
       id: uuid(),
       name,
       image,
       price,
       onSale,
-      quantity, 
+      quantity,
       categoryId,
-      description
+      description,
     }
     db.products.push(newProduct)
 
@@ -35,10 +43,24 @@ exports.Mutation = {
       title,
       comment,
       rating,
-      productId
+      productId,
     }
     db.reviews.push(newReview)
 
     return newReview
-  }
+  },
+  // Deleting
+  deleteCategory: (parent, { id }, { db }) => {
+    db.categories = db.categories.filter((category) => category.id != id)
+    // change categoryId of deleted cateogry in products to null
+    db.products = db.products.map((product) => {
+      if (product.categoryId == id)
+        return {
+          ...product,
+          categoryId: null,
+        }
+      else return product
+    })
+    return true
+  },
 }

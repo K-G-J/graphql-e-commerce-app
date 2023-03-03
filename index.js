@@ -1,9 +1,10 @@
 const { ApolloServer } = require('apollo-server')
 const { typeDefs } = require('./schema')
 const { Query } = require('./resolvers/Query')
+const { Mutation } = require('./resolvers/Mutation')
 const { Category } = require('./resolvers/Category')
 const { Product } = require('./resolvers/Product')
-const { categories, products, reviews } = require('./db')
+const { db } = require('./db')
 
 // create GraphQL server
 const server = new ApolloServer({
@@ -12,13 +13,12 @@ const server = new ApolloServer({
   resolvers: {
     // specify resolves
     Query,
+    Mutation,
     Category,
     Product,
   },
   context: {
-    categories,
-    products,
-    reviews
+    db
   },
 })
 

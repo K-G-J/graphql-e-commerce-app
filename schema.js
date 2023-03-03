@@ -10,6 +10,14 @@ exports.typeDefs = gql`
     categories: [Category!]!
     category(id: ID!): Category
   }
+  # define mutation
+  type Mutation {
+    # use input for parameters
+    addCategory(input: AddCategoryInput): Category!
+    addProduct(input: AddProductInput): Product!
+    addReview(input: AddReviewInput): Review!
+    deleteCategory(id: ID!): Boolean
+  }
   # define object type
   type Product {
     id: ID!
@@ -37,5 +45,24 @@ exports.typeDefs = gql`
   input ProductsFilterInput {
     onSale: Boolean
     avgRating: Int
+  }
+  input AddCategoryInput {
+    name: String!
+  }
+  input AddProductInput {
+    name: String!
+    description: String!
+    quantity: Int!
+    image: String!
+    price: Float!
+    onSale: Boolean!
+    categoryId: String!
+  }
+  input AddReviewInput {
+    date: String!
+    title: String!
+    comment: String!
+    rating: Int!
+    productId: ID!
   }
 `

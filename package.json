@@ -6,7 +6,6 @@
   "repository": "https://github.com/K-G-J/graphql-e-commerce-app",
   "author": "Kate Johnson",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "nodemon index"
   },
